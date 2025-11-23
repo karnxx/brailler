@@ -4,7 +4,7 @@ A real-time Braille output device that uses a Raspberry Pi and a USB camera to r
 
 ---
 
-## ✨ Features
+##  Features
 
 - Capture text using a USB camera  
 - Automatic sharp-frame detection  
@@ -19,7 +19,7 @@ A real-time Braille output device that uses a Raspberry Pi and a USB camera to r
 
 ---
 
-## 🧩 Hardware Used
+##  Hardware Used
 
 ### **Raspberry Pi Side**
 - Raspberry Pi 5  
@@ -37,7 +37,7 @@ A real-time Braille output device that uses a Raspberry Pi and a USB camera to r
 
 ---
 
-## 📦 Software Dependencies
+##  Software Dependencies
 
 Install on the Raspberry Pi:
 
