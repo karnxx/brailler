@@ -1,90 +1,128 @@
-▶️ Running the Program
+```md
+# 🔵 Braille OCR → Solenoid Display System  
+Raspberry Pi + Arduino Project
 
-Connect Arduino via USB
+A system that captures text using a Raspberry Pi camera, performs OCR, converts characters to Braille, and drives solenoids on an Arduino to physically display the Braille cells.
 
-Flash the Arduino code (in /arduino/solenoid_braille.ino)
+---
 
-Run the Raspberry Pi main script:
+## ▶️ Running the Program
 
+### **1. Connect Arduino via USB**
+
+### **2. Flash the Arduino code**
+Located at:
+
+```
+
+/arduino/solenoid_braille.ino
+
+````
+
+### **3. Run the Raspberry Pi main script**
+
+```bash
 python3 main.py
+````
 
+### **4. Buttons**
 
-Press GPIO17 to capture text
+* **GPIO17** → Capture text
+* **GPIO27** → Step through Braille output (next 2-cell block)
 
-Press GPIO27 to step through Braille output
+---
 
-🔡 Braille Encoding
+## 🔡 Braille Encoding
 
-Each Braille character is represented with a 6-bit dot pattern:
+Each Braille character uses 6 dots:
 
+```
 1 4
 2 5
 3 6
+```
 
+Encoded into a 6-bit sequence:
 
-Encrypted into a binary string like:
+| Character | Dots  | Binary   |
+| --------- | ----- | -------- |
+| **c**     | 1-4   | `100100` |
+| **l**     | 1-2-3 | `111000` |
+| **space** | none  | `000000` |
 
-100100   = "c"
-111000   = "l"
-000000   = space
-
-
-The Pi sends 12 bits at a time (2 cells).
-
-🔌 Serial Protocol
-
-Baud: 115200
-
-12-character string of 0 and 1
-
-Ends with newline \n
+The Raspberry Pi sends **12 bits at a time** (2 Braille cells).
 
 Example:
 
+```
 101000110000\n
+```
 
+---
 
-Arduino:
+## 🔌 Serial Protocol
 
-Activates each corresponding solenoid for a 200ms pulse
+* **Baud:** 115200
+* **Data:** 12 characters (`0` or `1`)
+* **Terminated with:** newline `\n`
 
-Prints status back for debugging
+Arduino behavior:
 
-🛠 Arduino GPIO Usage
+* Activates each selected solenoid for **200ms**
+* Prints status text for debugging in Serial Monitor
 
-Pins 2–13 → 12 solenoids
-Not using 0 and 1 (Serial RX/TX).
+---
 
-📚 Project Structure
+## 🛠 Arduino GPIO Usage
+
+* Pins **2–13** → 12 solenoids
+* Pins **0 and 1 are NOT used** (reserved for USB Serial RX/TX)
+
+Hardware notes:
+
+* Use external power for solenoids
+* Add flyback diodes
+* Ensure correct wiring for each channel
+
+---
+
+## 📚 Project Structure
+
+```
 project/
 │
-├── main.py                # Raspberry Pi text capture + OCR + Braille
-├── braille_map.py         # Braille definitions
+├── main.py                # Raspberry Pi OCR + Braille output controller
+├── braille_map.py         # Braille character → bit pattern map
 ├── arduino/
 │   └── solenoid_braille.ino
-├── image.jpg
-├── image_boxed.jpg
-├── text.txt
-└── braille.txt
+├── image.jpg              # Last captured camera photo
+├── image_boxed.jpg        # OCR bounding box overlay
+├── text.txt               # Cleaned text
+└── braille.txt            # Braille bitstrings
+```
 
-🧭 Notes
+---
 
-Make sure no other program opens /dev/ttyACM0
+## 🧭 Notes
 
-Use an external power supply for solenoids
+* Ensure **no other program** is using `/dev/ttyACM0`
+* Arduino prints debug output to help validate communication
+* Solenoids require **external power**, not USB power
+* Protect everything with **flyback diodes**
+* Good lighting improves OCR accuracy dramatically
 
-Add flyback diodes to prevent damage
+---
 
-Arduino prints debug info so you can monitor communication
+## 💡 Future Improvements
 
-💡 Future Improvements
+* Multi-cell continuous Braille line
+* Speech output (TTS)
+* Smarter dictionary + grammar correction
+* Advanced image preprocessing to reduce glare
+* Auto-cropping + rotation correction
+* Interface for multiple pages or paragraph navigation
 
-Multi-cell braille line
+---
 
-Speech output
-
-Offline dictionary enhancements
-
-Better image preprocessing under glare
-
-Auto-cropping and perspective correction
+```
+```
