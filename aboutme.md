@@ -1,4 +1,4 @@
-```md
+
 # 🔵 Braille OCR → Solenoid Display System  
 Raspberry Pi + Arduino Project
 
